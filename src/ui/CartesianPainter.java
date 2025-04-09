@@ -1,0 +1,144 @@
+package ui;
+
+import convert.Converter;
+
+import java.awt.*;
+
+public class CartesianPainter implements Painter {
+    private Dimension resolution;
+    private Converter converter;
+
+    public CartesianPainter(Dimension d, Converter converter){
+        setSize(d);
+        this.converter = converter;
+    }
+
+    public Dimension getSize(){
+        return resolution;
+    }
+
+    public void setSize(Dimension d){
+        resolution = new Dimension(d);
+    }
+
+    public void setSize(int width, int height){
+        resolution = new Dimension(width,height);
+    }
+
+    public void setConverter(Converter converter) {
+        this.converter = converter;
+    }
+
+    public void paint(Graphics g){
+        int width = resolution.width;
+        int height = resolution.height;
+        int centerX = (int)converter.xCrt2Scr(0);
+        int centerY = (int)converter.yCrt2Scr(0);
+
+        g.drawLine(0, centerY, width, centerY); // Ось X
+        g.drawLine(centerX, 0, centerX, height); // Ось Y
+
+        drawAxes(g, centerX, width, centerY, height);
+    }
+
+    private void drawAxes(Graphics g, int centerX, int width, int centerY, int height) {
+        double scaleX = converter.divisionDensityX();
+        double scaleY = converter.divisionDensityY();
+
+        // Малые деления (0.1 ед.)
+        g.setColor(Color.RED);
+        drawMinorTicks(g, centerX, width, centerY, scaleX / 10, true);  // Ось X
+        drawMinorTicks(g, centerY, height, centerX, scaleY / 10, false); // Ось Y
+
+        // Промежуточные деления (0.5 ед.)
+        g.setColor(Color.BLUE);
+        drawIntermediateTicks(g, centerX, width, centerY, scaleX, true);
+        drawIntermediateTicks(g, centerY, height, centerX, scaleY, false);
+
+        // Основные деления (1 ед.)
+        g.setColor(Color.BLACK);
+        drawXMajorTicks(g, centerX, width, centerY, scaleX);
+        drawYMajorTicks(g, centerY, height, centerX, scaleY);
+    }
+
+    // Отрисовка малых делений (0.1)
+    private void drawMinorTicks(Graphics g, int center, int max, int fixedPos, double step, boolean isXAxis) {
+        for (double pos = center + step; pos < max; pos += step) {
+            drawTick(g, (int)Math.round(pos), fixedPos, 2, isXAxis);
+        }
+
+        for (double pos = center - step; pos > 0; pos -= step) {
+            drawTick(g, (int)Math.round(pos), fixedPos, 2, isXAxis);
+        }
+    }
+
+    // Отрисовка промежуточных делений (0.5)
+    private void drawIntermediateTicks(Graphics g, int center, int max, int fixedPos, double scale, boolean isXAxis) {
+        double step = scale / 2;
+
+        for (double pos = center + step; pos < max; pos += scale) {
+            drawTick(g, (int)Math.round(pos), fixedPos, 4, isXAxis);
+        }
+
+        for (double pos = center - step; pos > 0; pos -= scale) {
+            drawTick(g, (int)Math.round(pos), fixedPos, 4, isXAxis);
+        }
+    }
+
+    // Отрисовка основных делений (1.0) для оси X
+    private void drawXMajorTicks(Graphics g, int center, int max, int fixedPos, double scale) {
+        for (double pos = center + scale; pos < max; pos += scale) {
+            int value = (int)Math.round((pos - center)/scale);
+            drawTick(g, (int)Math.round(pos), fixedPos, 6, true);
+            drawTickLabel(g, (int)Math.round(pos), fixedPos, value, true);
+        }
+
+        for (double pos = center - scale; pos > 0; pos -= scale) {
+            int value = (int)Math.round((pos - center)/scale);
+            drawTick(g, (int)Math.round(pos), fixedPos, 6, true);
+            drawTickLabel(g, (int)Math.round(pos), fixedPos, value, true);
+        }
+    }
+
+    // Отрисовка основных делений (1.0) для оси Y (с инвертированными значениями)
+    private void drawYMajorTicks(Graphics g, int center, int max, int fixedPos, double scale) {
+        for (double pos = center + scale; pos < max; pos += scale) {
+            int value = -(int)Math.round((pos - center)/scale); // Инвертируем значение
+            drawTick(g, (int)Math.round(pos), fixedPos, 6, false);
+            drawTickLabel(g, (int)Math.round(pos), fixedPos, value, false);
+        }
+
+        for (double pos = center - scale; pos > 0; pos -= scale) {
+            int value = -(int)Math.round((pos - center)/scale); // Инвертируем значение
+            drawTick(g, (int)Math.round(pos), fixedPos, 6, false);
+            drawTickLabel(g, (int)Math.round(pos), fixedPos, value, false);
+        }
+    }
+
+    private void drawTick(Graphics g, int pos, int fixedPos, int size, boolean isXAxis) {
+        if (isXAxis) {
+            g.drawLine(pos, fixedPos - size, pos, fixedPos + size);
+        } else {
+            g.drawLine(fixedPos - size, pos, fixedPos + size, pos);
+        }
+    }
+
+    private void drawTickLabel(Graphics g, int pos, int fixedPos, int value, boolean isXAxis) {
+        String str = String.valueOf(value);
+        var m = g.getFontMetrics();
+        var strRect = m.getStringBounds(str, g);
+        if (isXAxis) {
+            g.drawString(
+                    str,
+                    (int)(pos - strRect.getWidth() / 2),
+                    (int)(fixedPos + 3 + strRect.getHeight())
+            );
+        } else {
+            g.drawString(
+                    str,
+                    (int)(fixedPos + 2 + strRect.getWidth()),
+                    (int)(pos + strRect.getWidth() / 2)
+            );
+        }
+    }
+}

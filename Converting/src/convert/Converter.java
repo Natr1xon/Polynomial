@@ -1,13 +1,31 @@
 package convert;
 
 public class Converter {
-    private double xMin;
-    private double xMax;
-    private double yMin;
-    private double yMax;
+    private final double xMin;
+    private final double xMax;
+    private final double yMin;
+    private final double yMax;
 
     private int imageWidth;
+
+    public void setImageHeight(int imageHeight) {
+        this.imageHeight = imageHeight;
+    }
+
+    public void setImageWidth(int imageWidth) {
+        this.imageWidth = imageWidth;
+    }
+
     private int imageHeight;
+
+    public int getImageWidth() {
+        return imageWidth;
+    }
+
+    public int getImageHeight() {
+        return imageHeight;
+    }
+
 
     public Converter(double xMin, double xMax, double yMin, double yMax){
         this.xMin = xMin;

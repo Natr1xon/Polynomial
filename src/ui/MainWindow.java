@@ -219,8 +219,8 @@ public class MainWindow extends JFrame {
         Converter initialConverter = new Converter((double) spinXMin.getValue(), (double) spinXMax.getValue(),
                 (double) spinYMin.getValue(), (double) spinYMax.getValue(),
                 mainPanel.getWidth(), mainPanel.getHeight());
-        cartesianPainter = new CartesianPainter(mainPanel.getSize(), initialConverter);
-        functionPainter = new FunctionPainter(mainPanel.getSize(), initialConverter);
+        cartesianPainter = new CartesianPainter(initialConverter);
+        functionPainter = new FunctionPainter(initialConverter);
 
         GroupLayout gl = new GroupLayout(getContentPane());
         setLayout(gl);

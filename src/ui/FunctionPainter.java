@@ -7,25 +7,25 @@ import polynomial.Polynomial;
 import java.awt.*;
 
 public class FunctionPainter implements Painter{
-    private Dimension resolution;
     private Converter converter;
     private InterpolatingPolynomialNewton polynomialNewton = new InterpolatingPolynomialNewton();
 
-    public FunctionPainter(Dimension panel, Converter converter){
-        setSize(panel);
+    public FunctionPainter(Converter converter){
         this.converter = converter;
     }
 
     public Dimension getSize(){
-        return resolution;
+        return new Dimension(converter.getImageWidth(),converter.getImageHeight());
     }
 
     public void setSize(Dimension d){
-        resolution = new Dimension(d);
+        converter.setImageWidth(d.width);
+        converter.setImageHeight(d.height);
     }
 
     public void setSize(int width, int height){
-        resolution = new Dimension(width,height);
+        converter.setImageWidth(width);
+        converter.setImageHeight(height);
     }
 
     public void setConverter(Converter converter) {
@@ -99,7 +99,7 @@ public class FunctionPainter implements Painter{
         g.setColor(color);
 
         int prevX = -1, prevY = -1;
-        for (int x = 0; x < resolution.width; x++) {
+        for (int x = 0; x < converter.getImageWidth(); x++) {
             double y = polynomialNewton.calc(converter.xScr2Crt(x));
             int scrY = (int)converter.yCrt2Scr(y);
 
@@ -119,7 +119,7 @@ public class FunctionPainter implements Painter{
 
         g.setColor(color);
         int prevX = -1, prevY = -1;
-        for (int x = 0; x < resolution.width; x++) {
+        for (int x = 0; x < converter.getImageWidth(); x++) {
             double y = derivativePolynomial.calc(converter.xScr2Crt(x));
             int scrY = (int)converter.yCrt2Scr(y);
 

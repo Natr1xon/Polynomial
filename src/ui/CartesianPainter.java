@@ -5,24 +5,24 @@ import convert.Converter;
 import java.awt.*;
 
 public class CartesianPainter implements Painter {
-    private Dimension resolution;
     private Converter converter;
 
-    public CartesianPainter(Dimension d, Converter converter){
-        setSize(d);
+    public CartesianPainter(Converter converter){
         this.converter = converter;
     }
 
     public Dimension getSize(){
-        return resolution;
+        return new Dimension(converter.getImageWidth(),converter.getImageHeight());
     }
 
     public void setSize(Dimension d){
-        resolution = new Dimension(d);
+        converter.setImageWidth(d.width);
+        converter.setImageHeight(d.height);
     }
 
     public void setSize(int width, int height){
-        resolution = new Dimension(width,height);
+        converter.setImageWidth(width);
+        converter.setImageHeight(height);
     }
 
     public void setConverter(Converter converter) {
@@ -30,8 +30,8 @@ public class CartesianPainter implements Painter {
     }
 
     public void paint(Graphics g){
-        int width = resolution.width;
-        int height = resolution.height;
+        int width = converter.getImageWidth();
+        int height = converter.getImageHeight();
         int centerX = (int)converter.xCrt2Scr(0);
         int centerY = (int)converter.yCrt2Scr(0);
 

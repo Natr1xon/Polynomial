@@ -1,14 +1,12 @@
 package polynomial;
 
-import function.Function;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 
-public class Polynomial implements Function {
+public class Polynomial{
     protected final List<Double> coefficients;
 
     public Polynomial() {
@@ -154,7 +152,6 @@ public class Polynomial implements Function {
         return new Polynomial(polynomial);
     }
 
-    @Override
     public double calc(double x){
         double result = 0;
         for(int i = 0; i < coefficients.size(); i++){

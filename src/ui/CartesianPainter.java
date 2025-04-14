@@ -57,8 +57,8 @@ public class CartesianPainter implements Painter {
 
         // Основные деления (1 ед.)
         g.setColor(Color.BLACK);
-        drawXMajorTicks(g, centerX, width, centerY, scaleX);
-        drawYMajorTicks(g, centerY, height, centerX, scaleY);
+        drawMajorTicks(g, centerX, width, centerY, scaleX,true);
+        drawMajorTicks(g, centerY, height, centerX, scaleY,false);
     }
 
     // Отрисовка малых делений (0.1)
@@ -86,32 +86,19 @@ public class CartesianPainter implements Painter {
     }
 
     // Отрисовка основных делений (1.0) для оси X
-    private void drawXMajorTicks(Graphics g, int center, int max, int fixedPos, double scale) {
+    private void drawMajorTicks(Graphics g, int center, int max, int fixedPos, double scale, boolean isAxis) {
         for (double pos = center + scale; pos < max; pos += scale) {
             int value = (int)Math.round((pos - center)/scale);
-            drawTick(g, (int)Math.round(pos), fixedPos, 6, true);
-            drawTickLabel(g, (int)Math.round(pos), fixedPos, value, true);
+            if(!isAxis) value *= -1;
+            drawTick(g, (int)Math.round(pos), fixedPos, 6, isAxis);
+            drawTickLabel(g, (int)Math.round(pos), fixedPos, value, isAxis);
         }
 
         for (double pos = center - scale; pos > 0; pos -= scale) {
             int value = (int)Math.round((pos - center)/scale);
-            drawTick(g, (int)Math.round(pos), fixedPos, 6, true);
-            drawTickLabel(g, (int)Math.round(pos), fixedPos, value, true);
-        }
-    }
-
-    // Отрисовка основных делений (1.0) для оси Y (с инвертированными значениями)
-    private void drawYMajorTicks(Graphics g, int center, int max, int fixedPos, double scale) {
-        for (double pos = center + scale; pos < max; pos += scale) {
-            int value = -(int)Math.round((pos - center)/scale); // Инвертируем значение
-            drawTick(g, (int)Math.round(pos), fixedPos, 6, false);
-            drawTickLabel(g, (int)Math.round(pos), fixedPos, value, false);
-        }
-
-        for (double pos = center - scale; pos > 0; pos -= scale) {
-            int value = -(int)Math.round((pos - center)/scale); // Инвертируем значение
-            drawTick(g, (int)Math.round(pos), fixedPos, 6, false);
-            drawTickLabel(g, (int)Math.round(pos), fixedPos, value, false);
+            if(!isAxis) value *= -1;
+            drawTick(g, (int)Math.round(pos), fixedPos, 6, isAxis);
+            drawTickLabel(g, (int)Math.round(pos), fixedPos, value, isAxis);
         }
     }
 

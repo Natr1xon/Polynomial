@@ -82,10 +82,12 @@ public class MainWindow extends JFrame {
                 super.paintComponent(g);
                 updateConverter();
                 cartesianPainter.paint(g);
-                if(checkGraph.isSelected())
-                    functionPainter.paintGraph(g,colourGraphPanel.getBackground());
+                if(checkGraph.isSelected()) {
+                    g.setColor(colourGraphPanel.getBackground());
+                    functionPainter.paint(g);
+                }
                 if(checkDot.isSelected())
-                    functionPainter.paintDot(g,colourDotPanel.getBackground());
+                    functionPainter.paintDot(g, colourDotPanel.getBackground());
                 if(checkDerivative.isSelected())
                     functionPainter.paintDerivativeGraph(g,colourDerivativePanel.getBackground());
             }

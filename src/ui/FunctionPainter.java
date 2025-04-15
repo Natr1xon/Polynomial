@@ -51,10 +51,6 @@ public class FunctionPainter implements Painter{
         return true;
     }
 
-    public void clearGraph(){
-        polynomialNewton = new InterpolatingPolynomialNewton();
-    }
-
     public void deleteNearestPoint(int screenX, int screenY) {
         double targetX = converter.xScr2Crt(screenX);
         double targetY = converter.yScr2Crt(screenY);
@@ -82,21 +78,13 @@ public class FunctionPainter implements Painter{
         }
     }
 
-    public void paintDot(Graphics g, Color color){
-        g.setColor(color);
-        int sz = 8;
-        for(var polynomial : polynomialNewton.getPoints()){
-            int x1 = (int)converter.xCrt2Scr(polynomial[0]);
-            int y1 = (int)converter.yCrt2Scr(polynomialNewton.calc(polynomial[0]));
-            g.fillOval(x1 - sz/2,y1 - sz/2,sz,sz);
-        }
+    public void clearGraph(){
+        polynomialNewton = new InterpolatingPolynomialNewton();
     }
 
-    public void paintGraph(Graphics g, Color color){
+    public void paint(Graphics g) {
         Graphics2D g2b = (Graphics2D)g;
         g2b.setStroke(new BasicStroke(2));
-
-        g.setColor(color);
 
         int prevX = -1, prevY = -1;
         for (int x = 0; x < converter.getImageWidth(); x++) {
@@ -108,6 +96,16 @@ public class FunctionPainter implements Painter{
             }
             prevX = x;
             prevY = scrY;
+        }
+    }
+
+    public void paintDot(Graphics g, Color color){
+        g.setColor(color);
+        int sz = 8;
+        for(var polynomial : polynomialNewton.getPoints()){
+            int x1 = (int)converter.xCrt2Scr(polynomial[0]);
+            int y1 = (int)converter.yCrt2Scr(polynomialNewton.calc(polynomial[0]));
+            g.fillOval(x1 - sz/2,y1 - sz/2,sz,sz);
         }
     }
 
@@ -129,10 +127,5 @@ public class FunctionPainter implements Painter{
             prevX = x;
             prevY = scrY;
         }
-
-    }
-
-    public void paint(Graphics g) {
-
     }
 }

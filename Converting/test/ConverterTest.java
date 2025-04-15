@@ -39,4 +39,11 @@ class ConverterTest {
         assertEquals(640.0, converter.xCrt2Scr(3));
         assertEquals(150.0, converter.yCrt2Scr(2.5));
     }
+    @Test
+    void testDivisionDensity() {
+        Converter converter = new Converter(-5, 5, -5, 5, 800, 600);
+
+        assertEquals(80.0, converter.divisionDensityX(), 1e-9); // 800 / (5 - (-5)) = 80
+        assertEquals(60.0, converter.divisionDensityY(), 1e-9); // 600 / (5 - (-5)) = 60
+    }
 }

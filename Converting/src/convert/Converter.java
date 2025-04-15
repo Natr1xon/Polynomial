@@ -7,38 +7,28 @@ public class Converter {
     private final double yMax;
 
     private int imageWidth;
-
-    public void setImageHeight(int imageHeight) {
-        this.imageHeight = imageHeight;
-    }
-
-    public void setImageWidth(int imageWidth) {
-        this.imageWidth = imageWidth;
-    }
-
     private int imageHeight;
 
-    public int getImageWidth() {
-        return imageWidth;
-    }
+    public void setImageHeight(int imageHeight) { this.imageHeight = imageHeight; }
 
-    public int getImageHeight() {
-        return imageHeight;
-    }
+    public void setImageWidth(int imageWidth) { this.imageWidth = imageWidth; }
 
+    public int getImageWidth() { return imageWidth; }
 
-    public Converter(double xMin, double xMax, double yMin, double yMax){
+    public int getImageHeight() { return imageHeight; }
+
+    public Converter(double xMin, double xMax, double yMin, double yMax,
+                     int imageWidth, int imageHeight){
         this.xMin = xMin;
         this.xMax = xMax;
         this.yMin = yMin;
         this.yMax = yMax;
-    }
-
-    public Converter(double xMin, double xMax, double yMin, double yMax,
-                     int imageWidth, int imageHeight){
-        this(xMin, xMax, yMin, yMax);
         this.imageWidth = imageWidth;
         this.imageHeight = imageHeight;
+    }
+
+    public Converter(double xMin, double xMax, double yMin, double yMax){
+        this(xMin,xMax,yMin,yMax,1,1);
     }
 
     public double divisionDensityX(){

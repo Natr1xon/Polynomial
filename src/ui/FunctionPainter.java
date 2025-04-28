@@ -28,10 +28,6 @@ public class FunctionPainter implements Painter{
         converter.setImageHeight(height);
     }
 
-    public void setConverter(Converter converter) {
-        this.converter = converter;
-    }
-
     public boolean addPointToPolynomial(int x, int y){
         double x1 = converter.xScr2Crt(x);
         double y1 = converter.yScr2Crt(y);

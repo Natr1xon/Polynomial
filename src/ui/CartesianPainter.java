@@ -5,7 +5,7 @@ import convert.Converter;
 import java.awt.*;
 
 public class CartesianPainter implements Painter {
-    private Converter converter;
+    private final Converter converter;
 
     public CartesianPainter(Converter converter){
         this.converter = converter;
@@ -23,10 +23,6 @@ public class CartesianPainter implements Painter {
     public void setSize(int width, int height){
         converter.setImageWidth(width);
         converter.setImageHeight(height);
-    }
-
-    public void setConverter(Converter converter) {
-        this.converter = converter;
     }
 
     public void paint(Graphics g){

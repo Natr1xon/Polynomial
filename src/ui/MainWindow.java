@@ -45,6 +45,7 @@ public class MainWindow extends JFrame {
 
     private final CartesianPainter cartesianPainter;
     private final FunctionPainter functionPainter;
+    private final Converter initialConverter;
 
     private void initComponents() {
         snmXMin = new SpinnerNumberModel(-5.1, -100.0, 4.9, 0.1);
@@ -115,12 +116,8 @@ public class MainWindow extends JFrame {
         mainPanel.addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
-                Converter converter = new Converter((double)spinXMin.getValue(), (double) spinXMax.getValue(),
-                        (double)spinYMin.getValue(), (double) spinYMax.getValue(),
-                        mainPanel.getWidth(), mainPanel.getHeight());
-
-                double x = converter.xScr2Crt(e.getX());
-                double y = converter.yScr2Crt(e.getY());
+                double x = initialConverter.xScr2Crt(e.getX());
+                double y = initialConverter.yScr2Crt(e.getY());
 
                 String text = String.format("X: %.2f, Y: %.2f", x, y);
                 coordinates.setText(text);
@@ -201,15 +198,10 @@ public class MainWindow extends JFrame {
         double yMin = (Double)spinYMin.getValue();
         double yMax = (Double)spinYMax.getValue();
 
-        Converter converter = new Converter(xMin, xMax, yMin, yMax,
-                mainPanel.getWidth(), mainPanel.getHeight());
-
-        cartesianPainter.setConverter(converter);
-        functionPainter.setConverter(converter);
-
-        // Обновляем размеры
-        functionPainter.setSize(mainPanel.getSize());
-        cartesianPainter.setSize(mainPanel.getSize());
+        initialConverter.setIntervalX(xMin,xMax);
+        initialConverter.setIntervalY(yMin,yMax);
+        initialConverter.setImageWidth(mainPanel.getWidth());
+        initialConverter.setImageHeight(mainPanel.getHeight());
     }
 
     public MainWindow() {
@@ -218,7 +210,7 @@ public class MainWindow extends JFrame {
 
         initComponents();
 
-        Converter initialConverter = new Converter((double) spinXMin.getValue(), (double) spinXMax.getValue(),
+        initialConverter = new Converter((double) spinXMin.getValue(), (double) spinXMax.getValue(),
                 (double) spinYMin.getValue(), (double) spinYMax.getValue(),
                 mainPanel.getWidth(), mainPanel.getHeight());
         cartesianPainter = new CartesianPainter(initialConverter);

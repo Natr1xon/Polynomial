@@ -1,13 +1,39 @@
 package convert;
 
 public class Converter {
-    private final double xMin;
-    private final double xMax;
-    private final double yMin;
-    private final double yMax;
+    private double xMin;
+    private double xMax;
+    private double yMin;
+    private double yMax;
 
     private int imageWidth;
     private int imageHeight;
+
+    public void setIntervalX(double xMin, double xMax){
+        this.xMin = xMin;
+        this.xMax = xMax;
+    }
+
+    public void setIntervalY(double yMin, double yMax){
+        this.yMin = yMin;
+        this.yMax = yMax;
+    }
+
+    public double getYMin() {
+        return yMin;
+    }
+
+    public double getXMin() {
+        return xMin;
+    }
+
+    public double getXMax() {
+        return xMax;
+    }
+
+    public double getYMax() {
+        return yMax;
+    }
 
     public void setImageHeight(int imageHeight) { this.imageHeight = imageHeight; }
 
@@ -29,6 +55,13 @@ public class Converter {
 
     public Converter(double xMin, double xMax, double yMin, double yMax){
         this(xMin,xMax,yMin,yMax,1,1);
+    }
+
+    public Converter(Converter converter){
+        setIntervalX(converter.getXMin(),converter.getXMax());
+        setIntervalY(converter.getYMin(), converter.getYMax());
+        setImageWidth(converter.getImageWidth());
+        setImageHeight(converter.getImageHeight());
     }
 
     public double divisionDensityX(){
